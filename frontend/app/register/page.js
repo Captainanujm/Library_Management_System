@@ -70,10 +70,9 @@ export default function RegisterPage() {
               type="text"
               name="name"
               required
-              placeholder="John Doe"
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"
+              className="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"
             />
           </div>
 
@@ -85,10 +84,9 @@ export default function RegisterPage() {
               type="email"
               name="email"
               required
-              placeholder="john@example.com"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"
+              className="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"
             />
           </div>
 
@@ -100,10 +98,9 @@ export default function RegisterPage() {
               type="password"
               name="password"
               required
-              placeholder="••••••••"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"
+              className="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"
             />
           </div>
 
