@@ -26,6 +26,7 @@ export default function Dashboard() {
     genre: "",
     isbn: "",
     totalCopies: 1,
+    image: "",
   });
 
   const [errorMsg, setErrorMsg] = useState("");
@@ -92,13 +93,27 @@ export default function Dashboard() {
     router.push("/");
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBookForm((prev) => ({
+          ...prev,
+          image: reader.result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleAddBook = async (e) => {
     e.preventDefault();
     try {
       await addBook(bookForm);
       showNotification("success", "Book added successfully!");
       setIsAddModalOpen(false);
-      setBookForm({ title: "", author: "", genre: "", isbn: "", totalCopies: 1 });
+      setBookForm({ title: "", author: "", genre: "", isbn: "", totalCopies: 1, image: "" });
       loadDashboardData(user);
     } catch (error) {
       showNotification("error", error.response?.data?.message || "Failed to add book");
@@ -113,6 +128,7 @@ export default function Dashboard() {
       genre: book.genre,
       isbn: book.isbn,
       totalCopies: book.totalCopies,
+      image: book.image || "",
     });
     setIsEditModalOpen(true);
   };
@@ -370,7 +386,7 @@ export default function Dashboard() {
               </div>
               <button
                 onClick={() => {
-                  setBookForm({ title: "", author: "", genre: "", isbn: "", totalCopies: 1 });
+                  setBookForm({ title: "", author: "", genre: "", isbn: "", totalCopies: 1, image: "" });
                   setIsAddModalOpen(true);
                 }}
                 className="w-full md:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-semibold shadow-lg shadow-blue-950 transition cursor-pointer flex items-center justify-center gap-2"
@@ -400,8 +416,19 @@ export default function Dashboard() {
                     {filteredBooks.map((book) => (
                       <tr key={book._id} className="hover:bg-zinc-850/30 transition-all">
                         <td className="p-4">
-                          <div className="font-semibold text-zinc-200">{book.title}</div>
-                          <div className="text-xs text-zinc-400 mt-0.5">{book.author}</div>
+                          <div className="flex items-center gap-3">
+                            {book.image ? (
+                              <img src={book.image} alt="" className="w-9 h-11 object-cover rounded bg-zinc-950 border border-zinc-800 flex-shrink-0" />
+                            ) : (
+                              <div className="w-9 h-11 rounded bg-zinc-850 border border-zinc-800 flex items-center justify-center font-bold text-zinc-500 text-xs uppercase flex-shrink-0 select-none">
+                                {book.title.charAt(0)}
+                              </div>
+                            )}
+                            <div>
+                              <div className="font-semibold text-zinc-200">{book.title}</div>
+                              <div className="text-xs text-zinc-400 mt-0.5">{book.author}</div>
+                            </div>
+                          </div>
                         </td>
                         <td className="p-4 text-zinc-300">{book.genre}</td>
                         <td className="p-4 font-mono text-xs text-zinc-400">{book.isbn}</td>
@@ -471,8 +498,19 @@ export default function Dashboard() {
                             <div className="text-xs text-zinc-400 mt-0.5">{loan.studentId?.email}</div>
                           </td>
                           <td className="p-4">
-                            <div className="font-medium text-zinc-200">{loan.bookId?.title || "Deleted Book"}</div>
-                            <div className="text-xs text-zinc-400 mt-0.5">{loan.bookId?.author}</div>
+                            <div className="flex items-center gap-3">
+                              {loan.bookId?.image ? (
+                                <img src={loan.bookId.image} alt="" className="w-9 h-11 object-cover rounded bg-zinc-950 border border-zinc-800 flex-shrink-0" />
+                              ) : (
+                                <div className="w-9 h-11 rounded bg-zinc-850 border border-zinc-800 flex items-center justify-center font-bold text-zinc-500 text-xs uppercase flex-shrink-0 select-none">
+                                  {loan.bookId?.title ? loan.bookId.title.charAt(0) : "?"}
+                                </div>
+                              )}
+                              <div>
+                                <div className="font-medium text-zinc-200">{loan.bookId?.title || "Deleted Book"}</div>
+                                <div className="text-xs text-zinc-400 mt-0.5">{loan.bookId?.author}</div>
+                              </div>
+                            </div>
                           </td>
                           <td className="p-4 text-xs text-zinc-300 leading-normal">
                             <div>Issued: {formatDate(loan.issueDate)}</div>
@@ -536,47 +574,59 @@ export default function Dashboard() {
                   return (
                     <div
                       key={book._id}
-                      className="p-6 bg-zinc-900 border border-zinc-850 rounded-2xl hover:border-zinc-750 transition flex flex-col justify-between shadow-lg"
+                      className="bg-zinc-900 border border-zinc-850 rounded-2xl hover:border-zinc-750 transition overflow-hidden flex flex-col justify-between shadow-lg"
                     >
                       <div>
-                        <div className="flex items-center justify-between gap-2 mb-3">
-                          <span className="px-2 py-0.5 bg-zinc-800 text-zinc-400 border border-zinc-700 text-xs rounded-full uppercase tracking-wider font-semibold">
-                            {book.genre}
-                          </span>
-                          <span className={`text-xs font-semibold ${
-                            isAvailable ? "text-emerald-400" : "text-red-400"
-                          }`}>
-                            {isAvailable ? `Available: ${book.availableCopies}` : "Out of Stock"}
-                          </span>
+                        {book.image ? (
+                          <img src={book.image} alt={book.title} className="w-full h-56 object-cover border-b border-zinc-850" />
+                        ) : (
+                          <div className="w-full h-56 bg-zinc-950 border-b border-zinc-850 flex items-center justify-center font-black text-zinc-850 text-6xl select-none uppercase">
+                            {book.title.charAt(0)}
+                          </div>
+                        )}
+
+                        <div className="p-6">
+                          <div className="flex items-center justify-between gap-2 mb-3">
+                            <span className="px-2 py-0.5 bg-zinc-800 text-zinc-400 border border-zinc-700 text-xs rounded-full uppercase tracking-wider font-semibold">
+                              {book.genre}
+                            </span>
+                            <span className={`text-xs font-semibold ${
+                              isAvailable ? "text-emerald-400" : "text-red-400"
+                            }`}>
+                              {isAvailable ? `Available: ${book.availableCopies}` : "Out of Stock"}
+                            </span>
+                          </div>
+                          <h4 className="text-lg font-bold text-zinc-100 line-clamp-1">{book.title}</h4>
+                          <p className="text-sm text-zinc-400 mt-1">by {book.author}</p>
+                          <p className="text-xs text-zinc-500 font-mono mt-3">ISBN: {book.isbn}</p>
                         </div>
-                        <h4 className="text-lg font-bold text-zinc-100 line-clamp-1">{book.title}</h4>
-                        <p className="text-sm text-zinc-400 mt-1">by {book.author}</p>
-                        <p className="text-xs text-zinc-500 font-mono mt-3">ISBN: {book.isbn}</p>
                       </div>
 
-                      <div className="mt-6 pt-4 border-t border-zinc-850/50">
-                        {hasIssued ? (
-                          <button
-                            disabled
-                            className="w-full py-2 bg-zinc-800 border border-zinc-700 text-zinc-500 text-xs font-semibold rounded-lg cursor-not-allowed text-center"
-                          >
-                            Already Issued
-                          </button>
-                        ) : isAvailable ? (
-                          <button
-                            onClick={() => handleIssueBook(book._id)}
-                            className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg shadow transition-all cursor-pointer text-center"
-                          >
-                            Issue Book
-                          </button>
-                        ) : (
-                          <button
-                            disabled
-                            className="w-full py-2 bg-zinc-800 text-zinc-650 text-xs font-semibold rounded-lg cursor-not-allowed text-center"
-                          >
-                            Unavailable
-                          </button>
-                        )}
+                      <div className="px-6 pb-6">
+                        <div className="pt-4 border-t border-zinc-850/50">
+                          {hasIssued ? (
+                            <button
+                              disabled
+                              className="w-full py-2 bg-zinc-800 border border-zinc-700 text-zinc-500 text-xs font-semibold rounded-lg cursor-not-allowed text-center"
+                            >
+                              Already Issued
+                            </button>
+                          ) : isAvailable ? (
+                            <button
+                              onClick={() => handleIssueBook(book._id)}
+                              className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg shadow transition-all cursor-pointer text-center"
+                            >
+                              Issue Book
+                            </button>
+                          ) : (
+                            <button
+                              disabled
+                              className="w-full py-2 bg-zinc-800 text-zinc-650 text-xs font-semibold rounded-lg cursor-not-allowed text-center"
+                            >
+                              Unavailable
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   );
@@ -616,8 +666,19 @@ export default function Dashboard() {
                           return (
                             <tr key={loan._id} className="hover:bg-zinc-850/30 transition-all">
                               <td className="p-4">
-                                <div className="font-semibold text-zinc-200">{loan.bookId?.title}</div>
-                                <div className="text-xs text-zinc-400 mt-0.5">{loan.bookId?.author}</div>
+                                <div className="flex items-center gap-3">
+                                  {loan.bookId?.image ? (
+                                    <img src={loan.bookId.image} alt="" className="w-8 h-10 object-cover rounded bg-zinc-950 border border-zinc-800 flex-shrink-0" />
+                                  ) : (
+                                    <div className="w-8 h-10 rounded bg-zinc-850 border border-zinc-800 flex items-center justify-center font-bold text-zinc-500 text-xs uppercase flex-shrink-0 select-none">
+                                      {loan.bookId?.title ? loan.bookId.title.charAt(0) : "?"}
+                                    </div>
+                                  )}
+                                  <div>
+                                    <div className="font-semibold text-zinc-200">{loan.bookId?.title}</div>
+                                    <div className="text-xs text-zinc-400 mt-0.5">{loan.bookId?.author}</div>
+                                  </div>
+                                </div>
                               </td>
                               <td className="p-4 text-zinc-300">{formatDate(loan.issueDate)}</td>
                               <td className="p-4">
@@ -675,8 +736,19 @@ export default function Dashboard() {
                         .map((loan) => (
                           <tr key={loan._id} className="hover:bg-zinc-850/30 transition-all opacity-80">
                             <td className="p-4">
-                              <div className="font-semibold text-zinc-300">{loan.bookId?.title}</div>
-                              <div className="text-xs text-zinc-500 mt-0.5">{loan.bookId?.author}</div>
+                              <div className="flex items-center gap-3">
+                                {loan.bookId?.image ? (
+                                  <img src={loan.bookId.image} alt="" className="w-8 h-10 object-cover rounded bg-zinc-950 border border-zinc-800 flex-shrink-0" />
+                                ) : (
+                                  <div className="w-8 h-10 rounded bg-zinc-850 border border-zinc-800 flex items-center justify-center font-bold text-zinc-500 text-xs uppercase flex-shrink-0 select-none">
+                                    {loan.bookId?.title ? loan.bookId.title.charAt(0) : "?"}
+                                  </div>
+                                )}
+                                <div>
+                                  <div className="font-semibold text-zinc-300">{loan.bookId?.title}</div>
+                                  <div className="text-xs text-zinc-500 mt-0.5">{loan.bookId?.author}</div>
+                                </div>
+                              </div>
                             </td>
                             <td className="p-4 text-zinc-400">{formatDate(loan.issueDate)}</td>
                             <td className="p-4 text-zinc-400">{formatDate(loan.dueDate)}</td>
@@ -767,6 +839,21 @@ export default function Dashboard() {
                 </div>
               </div>
 
+              <div>
+                <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Book Cover Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-300 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-zinc-200 hover:file:bg-zinc-700 outline-none focus:border-blue-500 cursor-pointer"
+                />
+                {bookForm.image && (
+                  <div className="mt-3">
+                    <img src={bookForm.image} alt="Preview" className="h-24 w-20 object-cover rounded border border-zinc-800" />
+                  </div>
+                )}
+              </div>
+
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-800 mt-6">
                 <button
                   type="button"
@@ -853,6 +940,21 @@ export default function Dashboard() {
                     className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm outline-none focus:border-blue-500 text-zinc-200"
                   />
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Book Cover Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-300 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-zinc-200 hover:file:bg-zinc-700 outline-none focus:border-blue-500 cursor-pointer"
+                />
+                {bookForm.image && (
+                  <div className="mt-3">
+                    <img src={bookForm.image} alt="Preview" className="h-24 w-20 object-cover rounded border border-zinc-800" />
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-800 mt-6">

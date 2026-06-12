@@ -27,6 +27,9 @@ const bookSchema = new mongoose.Schema({
         type: Number,
         required: true,
         min: 0,
+    },
+    image: {
+        type: String,
     }
 }, {
     timestamps: true

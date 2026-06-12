@@ -41,7 +41,7 @@ export const getBookById = async (req, res) => {
 
 export const addBook = async (req, res) => {
     try {
-        const { title, author, genre, isbn, totalCopies } = req.body;
+        const { title, author, genre, isbn, totalCopies, image } = req.body;
 
         if (!title || !author || !genre || !isbn || totalCopies === undefined) {
             return res.status(400).json({
@@ -72,7 +72,8 @@ export const addBook = async (req, res) => {
             genre,
             isbn,
             totalCopies: copies,
-            availableCopies: copies
+            availableCopies: copies,
+            image
         });
 
         return res.status(201).json({
@@ -91,7 +92,7 @@ export const addBook = async (req, res) => {
 
 export const updateBook = async (req, res) => {
     try {
-        const { title, author, genre, isbn, totalCopies } = req.body;
+        const { title, author, genre, isbn, totalCopies, image } = req.body;
         const book = await Book.findById(req.params.id);
 
         if (!book) {
@@ -115,6 +116,7 @@ export const updateBook = async (req, res) => {
         if (title) book.title = title;
         if (author) book.author = author;
         if (genre) book.genre = genre;
+        if (image !== undefined) book.image = image;
 
         if (totalCopies !== undefined) {
             const newTotal = parseInt(totalCopies, 10);
