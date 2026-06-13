@@ -86,7 +86,7 @@ export default function Home() {
                 onClick={() => router.push("/register")}
                 className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-blue-500 hover:to-indigo-500 shadow-xl shadow-blue-950 cursor-pointer transition-all"
               >
-                Register as Student / Admin
+                Register as Student
               </button>
               <button
                 onClick={() => router.push("/login")}
