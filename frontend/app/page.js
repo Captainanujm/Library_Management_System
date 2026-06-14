@@ -2,11 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useTheme } from "../context/ThemeContext";
 
 export default function Home() {
   const router = useRouter();
-  const { theme, toggleTheme } = useTheme();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -31,13 +29,6 @@ export default function Home() {
           </span>
         </div>
         <div className="flex items-center gap-4">
-          <button
-            onClick={toggleTheme}
-            className="px-4 py-2 rounded-xl bg-zinc-150 dark:bg-zinc-900 border border-zinc-250 dark:border-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-850 cursor-pointer transition-all"
-          >
-            {theme === "dark" ? "Light Theme" : "Dark Theme"}
-          </button>
-
           {isLoggedIn ? (
             <button
               onClick={() => router.push("/dashboard")}

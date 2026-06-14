@@ -2,14 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useTheme } from "../../context/ThemeContext";
 import { getBooks, addBook, updateBook, deleteBook } from "../../services/bookService";
 import { issueBook, returnBook, getMyTransactions, getAllTransactions } from "../../services/transactionService";
 import BookCard from "../../components/BookCard";
 
 export default function Dashboard() {
   const router = useRouter();
-  const { theme, toggleTheme } = useTheme();
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -241,14 +239,6 @@ export default function Dashboard() {
         </div>
 
         <div className="flex items-center gap-4">
-         
-          <button
-            onClick={toggleTheme}
-            className="px-4 py-1.5 rounded-lg bg-zinc-150 dark:bg-zinc-900 border border-zinc-250 dark:border-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-850 cursor-pointer transition-all"
-          >
-            {theme === "dark" ? "Light Theme" : "Dark Theme"}
-          </button>
-
           <div className="hidden md:flex flex-col text-right">
             <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">{user?.name}</span>
             <span className="text-xs text-zinc-500 dark:text-zinc-400">{user?.email}</span>
