@@ -43,29 +43,29 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-950 px-4 font-sans text-zinc-100">
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500 rounded-full blur-[100px] opacity-10"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500 rounded-full blur-[100px] opacity-10"></div>
+    <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 px-4 font-sans text-zinc-900 dark:text-zinc-100 transition-all duration-300">
+      <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 shadow-2xl relative overflow-hidden transition-all duration-300">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500 rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500 rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
 
         <div className="text-center mb-8 relative z-10">
-          <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">
+          <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
             Welcome Back
           </h1>
-          <p className="text-zinc-400 mt-2 text-sm">
+          <p className="text-zinc-500 dark:text-zinc-400 mt-2 text-sm">
             Sign in to access the Library Management System
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-950 border border-red-800 text-red-300 rounded-lg text-sm">
+          <div className="mb-4 p-3 bg-red-100 dark:bg-red-950 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 rounded-lg text-sm">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
           <div>
-            <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">
               Email Address
             </label>
             <input
@@ -74,12 +74,12 @@ export default function LoginPage() {
               required
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"
+              className="w-full px-4 py-3 bg-zinc-100 dark:bg-zinc-950 border border-zinc-250 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">
               Password
             </label>
             <input
@@ -88,25 +88,25 @@ export default function LoginPage() {
               required
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"
+              className="w-full px-4 py-3 bg-zinc-100 dark:bg-zinc-950 border border-zinc-250 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-500 hover:to-indigo-500 focus:ring-2 focus:ring-blue-500 transition-all cursor-pointer text-sm shadow-lg shadow-blue-950"
+            className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-500 hover:to-indigo-500 focus:ring-2 focus:ring-blue-500 transition-all cursor-pointer text-sm shadow-lg"
           >
             {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-zinc-400 mt-6 relative z-10">
+        <p className="text-center text-sm text-zinc-500 dark:text-zinc-400 mt-6 relative z-10">
           Don't have an account?
           <button
             type="button"
             onClick={() => router.push("/register")}
-            className="text-blue-400 ml-1.5 hover:underline cursor-pointer font-medium"
+            className="text-blue-600 dark:text-blue-400 ml-1.5 hover:underline cursor-pointer font-medium"
           >
             Register
           </button>
