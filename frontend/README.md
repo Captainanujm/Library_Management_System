@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Athena Library Management System Frontend
+
+This is the Next.js frontend client for the Athena Library Management System, connected to the live Render API.
 
 ## Getting Started
 
